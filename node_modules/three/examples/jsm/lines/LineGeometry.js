@@ -5,6 +5,9 @@ class LineGeometry extends LineSegmentsGeometry {
 	constructor() {
 
 		super();
+
+		this.isLineGeometry = true;
+
 		this.type = 'LineGeometry';
 
 	}
@@ -13,10 +16,10 @@ class LineGeometry extends LineSegmentsGeometry {
 
 		// converts [ x1, y1, z1,  x2, y2, z2, ... ] to pairs format
 
-		var length = array.length - 3;
-		var points = new Float32Array( 2 * length );
+		const length = array.length - 3;
+		const points = new Float32Array( 2 * length );
 
-		for ( var i = 0; i < length; i += 3 ) {
+		for ( let i = 0; i < length; i += 3 ) {
 
 			points[ 2 * i ] = array[ i ];
 			points[ 2 * i + 1 ] = array[ i + 1 ];
@@ -38,10 +41,10 @@ class LineGeometry extends LineSegmentsGeometry {
 
 		// converts [ r1, g1, b1,  r2, g2, b2, ... ] to pairs format
 
-		var length = array.length - 3;
-		var colors = new Float32Array( 2 * length );
+		const length = array.length - 3;
+		const colors = new Float32Array( 2 * length );
 
-		for ( var i = 0; i < length; i += 3 ) {
+		for ( let i = 0; i < length; i += 3 ) {
 
 			colors[ 2 * i ] = array[ i ];
 			colors[ 2 * i + 1 ] = array[ i + 1 ];
@@ -59,20 +62,36 @@ class LineGeometry extends LineSegmentsGeometry {
 
 	}
 
-	fromLine( line ) {
+	setFromPoints( points ) {
 
-		var geometry = line.geometry;
+		// converts a vector3 or vector2 array to pairs format
 
-		if ( geometry.isGeometry ) {
+		const length = points.length - 1;
+		const positions = new Float32Array( 6 * length );
 
-			console.error( 'THREE.LineGeometry no longer supports Geometry. Use THREE.BufferGeometry instead.' );
-			return;
+		for ( let i = 0; i < length; i ++ ) {
 
-		} else if ( geometry.isBufferGeometry ) {
+			positions[ 6 * i ] = points[ i ].x;
+			positions[ 6 * i + 1 ] = points[ i ].y;
+			positions[ 6 * i + 2 ] = points[ i ].z || 0;
 
-			this.setPositions( geometry.attributes.position.array ); // assumes non-indexed
+			positions[ 6 * i + 3 ] = points[ i + 1 ].x;
+			positions[ 6 * i + 4 ] = points[ i + 1 ].y;
+			positions[ 6 * i + 5 ] = points[ i + 1 ].z || 0;
 
 		}
+
+		super.setPositions( positions );
+
+		return this;
+
+	}
+
+	fromLine( line ) {
+
+		const geometry = line.geometry;
+
+		this.setPositions( geometry.attributes.position.array ); // assumes non-indexed
 
 		// set colors, maybe
 
@@ -81,7 +100,5 @@ class LineGeometry extends LineSegmentsGeometry {
 	}
 
 }
-
-LineGeometry.prototype.isLineGeometry = true;
 
 export { LineGeometry };

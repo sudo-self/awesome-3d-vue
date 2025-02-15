@@ -11,6 +11,8 @@ import {
  */
 const BokehShader = {
 
+	name: 'BokehShader',
+
 	uniforms: {
 
 		'textureWidth': { value: 1.0 },
@@ -102,7 +104,7 @@ const BokehShader = {
 
 		float vignout = 1.3; // vignetting outer border
 		float vignin = 0.0; // vignetting inner border
-		float vignfade = 22.0; // f-stops till vignete fades
+		float vignfade = 22.0; // f-stops till vignette fades
 
 		uniform bool shaderFocus;
 		// disable if you use external focalDepth value
@@ -345,11 +347,16 @@ const BokehShader = {
 
 			gl_FragColor.rgb = col;
 			gl_FragColor.a = 1.0;
+
+			#include <tonemapping_fragment>
+			#include <colorspace_fragment>
 		}`
 
 };
 
 const BokehDepthShader = {
+
+	name: 'BokehDepthShader',
 
 	uniforms: {
 
