@@ -58,7 +58,7 @@ onMounted(() => {
   directionalLight.position.set(1, 1, 1).normalize();
   scene.add(directionalLight);
 
-  // Load HDR texture and toggle environment based on checkbox
+
   const hdrLoader = new RGBELoader();
   let hdrTexture = null;
 
@@ -71,7 +71,7 @@ onMounted(() => {
     }
   });
 
-  // Load GLTF model
+
   const loader = new GLTFLoader();
   loader.load('/model.gltf', (gltf) => {
     const model = gltf.scene;
@@ -106,7 +106,7 @@ onMounted(() => {
     camera.fov = cameraFov.value;
     camera.updateProjectionMatrix();
 
-    // Render scene
+ 
     controls.update();
     renderer.render(scene, camera);
   };
@@ -126,7 +126,7 @@ const toggleControls = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #000; /* Ensures a black background */
+  background-color: #000;
 }
 
 .controls {
@@ -138,7 +138,7 @@ const toggleControls = () => {
   color: white;
   z-index: 10;
   overflow-y: auto;
-  max-height: calc(100% - 60px); /* Prevents overlap with the toggle button */
+  max-height: calc(100% - 60px);
 }
 
 .controls label,
